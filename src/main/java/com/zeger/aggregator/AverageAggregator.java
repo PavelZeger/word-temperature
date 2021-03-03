@@ -2,7 +2,7 @@ package com.zeger.aggregator;
 
 import com.zeger.dto.City;
 import com.zeger.dto.DailyTemp;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import java.util.Comparator;
 import java.util.List;
@@ -13,19 +13,15 @@ import java.util.stream.Collectors;
 /**
  * @author Pavel Zeger
  */
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AverageAggregator extends Aggregator {
 
-    private List<String> ids;
+    private final List<String> ids;
 
     @Override
     public List<String> aggregate() {
         Set<City> cities = getCities(ids);
-        Map<String, List<DailyTemp>> cityByTemp = cities
-                .parallelStream()
-                .filter(city -> city.getPopulation() >= POPULATION_THRESHOLD)
-                .map(City::getId)
-                .collect(Collectors.toUnmodifiableMap(id -> id, cityService::getLastYearTemperature));
+        Map<String, List<DailyTemp>> cityByTemp = getCityByTemp(cities);
         Map<String, Double> cityByAvgTemp = cityByTemp.entrySet().parallelStream()
                 .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, entry -> getAverage(entry.getValue())));
         return cityByAvgTemp.entrySet()
@@ -37,7 +33,7 @@ public class AverageAggregator extends Aggregator {
     }
 
     private double getAverage(List<DailyTemp> dailyTemps) {
-        return dailyTemps.stream()
+        return dailyTemps.parallelStream()
                 .mapToDouble(DailyTemp::getTemperature)
                 .summaryStatistics()
                 .getAverage();

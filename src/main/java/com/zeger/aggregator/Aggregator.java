@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  */
 public abstract class Aggregator {
 
-    int POPULATION_THRESHOLD = 50000;
+    int populationThreshold = 50000;
     CityService cityService = new CityService();
 
     public Set<City> getCities(List<String> ids) {
@@ -24,7 +24,7 @@ public abstract class Aggregator {
     public Map<String, List<DailyTemp>> getCityByTemp(Set<City> cities) {
         return cities
                 .parallelStream()
-                .filter(city -> city.getPopulation() >= POPULATION_THRESHOLD)
+                .filter(city -> city.getPopulation() >= populationThreshold)
                 .map(City::getId)
                 .collect(Collectors.toUnmodifiableMap(id -> id, cityService::getLastYearTemperature));
     }

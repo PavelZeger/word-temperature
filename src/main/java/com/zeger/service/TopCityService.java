@@ -9,8 +9,7 @@ import java.util.List;
  */
 public class TopCityService {
 
-    public List<String> getTopCities (List<String> cityIds, String aggregationType) {
-        AggregateType aggregateType = AggregateType.valueOf(aggregationType.toUpperCase());
+    public List<String> getTopCities (List<String> cityIds, AggregateType aggregateType) {
         return aggregateType.execute(cityIds);
     }
 

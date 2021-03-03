@@ -2,7 +2,7 @@ package com.zeger.aggregator;
 
 import com.zeger.dto.City;
 import com.zeger.dto.DailyTemp;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import java.util.Comparator;
 import java.util.List;
@@ -13,10 +13,10 @@ import java.util.stream.Collectors;
 /**
  * @author Pavel Zeger
  */
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class MaxAggregator extends Aggregator {
 
-    private List<String> ids;
+    private final List<String> ids;
 
     @Override
     public List<String> aggregate() {
