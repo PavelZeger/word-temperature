@@ -4,7 +4,6 @@ import com.zeger.dto.City;
 import com.zeger.dto.DailyTemp;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -22,14 +21,13 @@ public class MaxAggregator extends Aggregator {
     public List<String> aggregate() {
         Set<City> cities = getCities(ids);
         Map<String, List<DailyTemp>> cityByTemp = getCityByTemp(cities);
-        Map<String, Double> cityByMaxTemp = cityByTemp.entrySet().parallelStream()
+        Map<String, Double> cityByMaxTemp = getCityByMaxTemp(cityByTemp);
+        return getTopCities(cityByMaxTemp);
+    }
+
+    private Map<String, Double> getCityByMaxTemp(Map<String, List<DailyTemp>> cityByTemp) {
+        return cityByTemp.entrySet().parallelStream()
                 .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, entry -> getMax(entry.getValue())));
-        return cityByMaxTemp.entrySet()
-                .parallelStream()
-                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                .limit(3)
-                .map(Map.Entry::getKey)
-                .collect(Collectors.toUnmodifiableList());
     }
 
     private double getMax(List<DailyTemp> dailyTemps) {

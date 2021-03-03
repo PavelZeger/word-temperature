@@ -17,7 +17,9 @@ public class App {
         AggregateType avg = AggregateType.AVG;
         List<String> topCitiesByAvg = topCityService.getTopCities(cities, avg);
         topCitiesByAvg.forEach(System.out::println);
+        
         System.out.println("***");
+        
         AggregateType max = AggregateType.MAX;
         List<String> topCitiesByMax = topCityService.getTopCities(cities, max);
         topCitiesByMax.forEach(System.out::println);

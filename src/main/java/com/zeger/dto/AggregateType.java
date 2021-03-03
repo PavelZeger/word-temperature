@@ -1,6 +1,5 @@
 package com.zeger.dto;
 
-
 import com.zeger.aggregator.AverageAggregator;
 import com.zeger.aggregator.MaxAggregator;
 

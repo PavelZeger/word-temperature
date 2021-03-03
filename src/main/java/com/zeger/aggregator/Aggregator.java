@@ -4,6 +4,7 @@ import com.zeger.dto.City;
 import com.zeger.dto.DailyTemp;
 import com.zeger.service.CityService;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -19,6 +20,15 @@ public abstract class Aggregator {
 
     public Set<City> getCities(List<String> ids) {
         return cityService.getAllCitiesByIds(ids.stream().collect(Collectors.toUnmodifiableSet()));
+    }
+
+    public List<String> getTopCities(Map<String, Double> cityByTemp) {
+        return cityByTemp.entrySet()
+                .parallelStream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .limit(3)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toUnmodifiableList());
     }
 
     public Map<String, List<DailyTemp>> getCityByTemp(Set<City> cities) {
