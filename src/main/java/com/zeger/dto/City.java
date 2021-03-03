@@ -1,19 +1,17 @@
 package com.zeger.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Value;
 
 /**
  * @author Pavel Zeger
  */
 @Builder
-@AllArgsConstructor
-@Getter
+@Value
 public class City {
 
-    private String id;
-    private String name;
-    private int population;
+    String id;
+    String name;
+    int population;
 
 }
